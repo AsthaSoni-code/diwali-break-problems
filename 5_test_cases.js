@@ -1,27 +1,9 @@
-function areValuesEqual(a, b) {
-  return a === b;
-}
-
-function isEqual(a, b) {
-  return areTypesEqual(a, b);
-}
-
-function areBothObjects(a, b) {
-  return typeof a === "object" && typeof b === "object";
-}
-
-function areTypesEqual(a, b) {
-  if (areBothArrays(a, b)) return isArrayEqual(a, b);
-  if (areBothObjects(a, b)) return false;
-  return areValuesEqual(a, b);
+function isLengthEqual(a, b) {
+  return a.length === b.length;
 }
 
 function areBothArrays(a, b) {
   return Array.isArray(a) && Array.isArray(b);
-}
-
-function isLengthEqual(a, b) {
-  return a.length === b.length;
 }
 
 function isArrayEqual(a, b) {
@@ -33,13 +15,55 @@ function isArrayEqual(a, b) {
   return true;
 }
 
+function areBothObjects(a, b) {
+  return typeof a === "object" && typeof b === "object";
+}
+
 function isObjectEqual(a, b) {
-  if (!isLengthEqual(Object.keys(a).length, Object.keys(b).length))
-    return false;
+  if (!isLengthEqual(Object.keys(a), Object.keys(b))) return false;
+
+  for (const key in a) {
+    if (!(key in b)) return false;
+    if (!areValuesEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
+function areValuesEqual(a, b) {
+  return a === b;
+}
+
+function type(a) {
+  if (Array.isArray(a)) return "Array";
+  return typeof a;
+}
+
+function areTypesEqual(a, b) {
+  if (Array.isArray(a) && Array.isArray(b)) return true;
+  if (type(a) === "object" && type(b) === "object") return true;
+
+  return areValuesEqual(a, b);
+}
+
+function areEquals(a, b) {
+  console.log(!areTypesEqual(a, b));
+  if (!areTypesEqual(a, b)) return false;
+  console.log(type(a));
+
+  switch (type(a)) {
+    case "Array":
+      return isArrayEqual(a, b);
+
+    case "Object":
+      return isArrayEqual(a, b);
+
+    default:
+      return areValuesEqual(a, b);
+  }
 }
 
 function test(massege, expected, a, b) {
-  const actual = isEqual(a, b);
+  const actual = areEquals(a, b);
   const result = expected === actual ? "✅" : "❌";
   console.log(`${result} | ${massege}`);
 }
@@ -55,12 +79,16 @@ function testStrings() {
 }
 
 function testObjects() {
-  test("two objects are equal", true, { a: 1 }, { a: 1 });
+  test("two objects are equal", true, { a: 1, b: 4 }, { b: 4, a: 1 });
+  test("two different objects are unequal", false, { a: 1 }, { a: 1, b: 3 });
+
   //   test("two nested objects are equal", true, { a: { b: 2 } }, { a: { b: 2 } });
 }
 
 function testArrays() {
   test("two arrays are equal", true, [1, 2], [1, 2]);
+  test("two different arrays are unequal", false, [1], []);
+
   //   test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
 }
 
@@ -75,8 +103,8 @@ function main() {
   //   testBoolean();
   //   testNumbers();
   //   testStrings();
-  //   testArrays();
-  testObjects();
+  testArrays();
+  //   testObjects();
 }
 
 main();
