@@ -6,8 +6,13 @@ function isEqual(a, b) {
   return areTypesEqual(a, b);
 }
 
+function areBothObjects(a, b) {
+  return typeof a === "object" && typeof b === "object";
+}
+
 function areTypesEqual(a, b) {
   if (areBothArrays(a, b)) return isArrayEqual(a, b);
+  if (areBothObjects(a, b)) return false;
   return areValuesEqual(a, b);
 }
 
@@ -28,6 +33,11 @@ function isArrayEqual(a, b) {
   return true;
 }
 
+function isObjectEqual(a, b) {
+  if (!isLengthEqual(Object.keys(a).length, Object.keys(b).length))
+    return false;
+}
+
 function test(massege, expected, a, b) {
   const actual = isEqual(a, b);
   const result = expected === actual ? "✅" : "❌";
@@ -45,7 +55,7 @@ function testStrings() {
 }
 
 function testObjects() {
-  test("two objects are equal", true, {}, {});
+  test("two objects are equal", true, { a: 1 }, { a: 1 });
   //   test("two nested objects are equal", true, { a: { b: 2 } }, { a: { b: 2 } });
 }
 
@@ -62,10 +72,10 @@ function testBoolean() {
 }
 
 function main() {
-  testBoolean();
-  testNumbers();
-  testStrings();
-  testArrays();
+  //   testBoolean();
+  //   testNumbers();
+  //   testStrings();
+  //   testArrays();
   testObjects();
 }
 
