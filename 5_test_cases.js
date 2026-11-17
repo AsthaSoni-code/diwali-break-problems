@@ -24,7 +24,7 @@ function isObjectEqual(a, b) {
 
   for (const key in a) {
     if (!(key in b)) return false;
-    if (!areValuesEqual(a[key], b[key])) return false;
+    if (!areEquals(a[key], b[key])) return false;
   }
   return true;
 }
@@ -76,6 +76,18 @@ function testStrings() {
 function testObjects() {
   test("two objects are equal", true, { a: 1, b: 4 }, { b: 4, a: 1 });
   test("two different objects are unequal", false, { a: 1 }, { a: 1, b: 3 });
+  test(
+    "two same nested objects are equal",
+    true,
+    { a: 1, b: { a: 1 }, c: 2 },
+    { a: 1, b: { a: 1 }, c: 2 },
+  );
+  test(
+    "two different nested objects are unequal",
+    false,
+    { a: 1, b: { a: 1 }, c: 2 },
+    { a: { a: 1 }, c: 2 },
+  );
 }
 
 function testArrays() {
