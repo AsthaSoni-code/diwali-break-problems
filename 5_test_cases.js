@@ -36,7 +36,7 @@ function test(massege, expected, a, b) {
 
 function testNumbers() {
   test("two same numbers are equal", true, 2, 2);
-  //   test("two different numbers are unequal", false, 3, 2);
+  test("two different numbers are unequal", false, 3, 2);
 }
 
 function testStrings() {
@@ -46,7 +46,7 @@ function testStrings() {
 
 function testArrays() {
   test("two arrays are equal", true, [1, 2], [1, 2]);
-  //   test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
+  // test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
 }
 
 function testBoolean() {
