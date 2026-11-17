@@ -39,23 +39,18 @@ function type(a) {
 }
 
 function areTypesEqual(a, b) {
-  if (Array.isArray(a) && Array.isArray(b)) return true;
-  if (type(a) === "object" && type(b) === "object") return true;
-
-  return areValuesEqual(a, b);
+  return type(a) === type(b);
 }
 
 function areEquals(a, b) {
-  console.log(!areTypesEqual(a, b));
   if (!areTypesEqual(a, b)) return false;
-  console.log(type(a));
 
   switch (type(a)) {
     case "Array":
       return isArrayEqual(a, b);
 
-    case "Object":
-      return isArrayEqual(a, b);
+    case "object":
+      return isObjectEqual(a, b);
 
     default:
       return areValuesEqual(a, b);
@@ -81,14 +76,11 @@ function testStrings() {
 function testObjects() {
   test("two objects are equal", true, { a: 1, b: 4 }, { b: 4, a: 1 });
   test("two different objects are unequal", false, { a: 1 }, { a: 1, b: 3 });
-
-  //   test("two nested objects are equal", true, { a: { b: 2 } }, { a: { b: 2 } });
 }
 
 function testArrays() {
   test("two arrays are equal", true, [1, 2], [1, 2]);
   test("two different arrays are unequal", false, [1], []);
-
   //   test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
 }
 
@@ -100,11 +92,11 @@ function testBoolean() {
 }
 
 function main() {
-  //   testBoolean();
-  //   testNumbers();
-  //   testStrings();
+  testBoolean();
+  testNumbers();
+  testStrings();
   testArrays();
-  //   testObjects();
+  testObjects();
 }
 
 main();
