@@ -110,6 +110,8 @@ function testBoolean() {
 
 function testUndefindNullNaN() {
   test("two null values are equal", true, null, null);
+  test("two undefined values are equal", true, undefined, undefined);
+  test("undefined and null is unequal", false, undefined, null);
 }
 
 function main() {
