@@ -34,6 +34,7 @@ function areValuesEqual(a, b) {
 }
 
 function type(a) {
+  if (a === null) return "null";
   if (Array.isArray(a)) return "Array";
   return typeof a;
 }
@@ -51,6 +52,9 @@ function areEquals(a, b) {
 
     case "object":
       return isObjectEqual(a, b);
+
+    case "null":
+      return areValuesEqual(a, b);
 
     default:
       return areValuesEqual(a, b);
@@ -104,12 +108,17 @@ function testBoolean() {
   test("a boolean and a array should be unequal", false, true, [1, 2]);
 }
 
+function testUndefindNullNaN() {
+  test("two null values are equal", true, null, null);
+}
+
 function main() {
   testBoolean();
   testNumbers();
   testStrings();
   testArrays();
   testObjects();
+  testUndefindNullNaN();
 }
 
 main();
