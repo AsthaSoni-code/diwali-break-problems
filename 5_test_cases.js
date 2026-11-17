@@ -40,13 +40,18 @@ function testNumbers() {
 }
 
 function testStrings() {
-  test("two nested strings are equal", true, { a: { b: 2 } }, { a: { b: 2 } });
-  test("two strings are equal", true, {}, {});
+  test("two same strings are equal", true, "a", "a");
+  test("two different strings are unequal", false, "b", "a");
+}
+
+function testObjects() {
+  test("two objects are equal", true, {}, {});
+  //   test("two nested objects are equal", true, { a: { b: 2 } }, { a: { b: 2 } });
 }
 
 function testArrays() {
   test("two arrays are equal", true, [1, 2], [1, 2]);
-  // test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
+  //   test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
 }
 
 function testBoolean() {
@@ -59,8 +64,9 @@ function testBoolean() {
 function main() {
   testBoolean();
   testNumbers();
+  testStrings();
   testArrays();
-  //   testStrings();
+  testObjects();
 }
 
 main();
