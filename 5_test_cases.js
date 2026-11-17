@@ -10,7 +10,7 @@ function isArrayEqual(a, b) {
   if (!isLengthEqual(a, b)) return false;
 
   for (let index = 0; index < a.length; index++) {
-    if (!areValuesEqual(a[index], b[index])) return false;
+    if (!areEquals(a[index], b[index])) return false;
   }
   return true;
 }
@@ -93,7 +93,8 @@ function testObjects() {
 function testArrays() {
   test("two arrays are equal", true, [1, 2], [1, 2]);
   test("two different arrays are unequal", false, [1], []);
-  //   test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
+  test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
+  test("two different nested arrays are unequal", false, [[2, 3], 4], [[2], 4]);
 }
 
 function testBoolean() {
