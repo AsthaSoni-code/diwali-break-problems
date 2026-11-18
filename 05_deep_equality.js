@@ -2,14 +2,6 @@ function isLengthEqual(a, b) {
   return a.length === b.length;
 }
 
-function areBothArrays(a, b) {
-  return Array.isArray(a) && Array.isArray(b);
-}
-
-function areBothObjects(a, b) {
-  return typeof a === "object" && typeof b === "object";
-}
-
 function areObjectsEqual(a, b) {
   if (!isLengthEqual(Object.keys(a), Object.keys(b))) return false;
 
