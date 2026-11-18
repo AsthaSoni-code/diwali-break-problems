@@ -6,15 +6,6 @@ function areBothArrays(a, b) {
   return Array.isArray(a) && Array.isArray(b);
 }
 
-function isArrayEqual(a, b) {
-  if (!isLengthEqual(a, b)) return false;
-
-  for (let index = 0; index < a.length; index++) {
-    if (!isEqual(a[index], b[index])) return false;
-  }
-  return true;
-}
-
 function areBothObjects(a, b) {
   return typeof a === "object" && typeof b === "object";
 }
