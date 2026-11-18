@@ -54,6 +54,7 @@ function test(massege, expected, a, b) {
 function testNumbers() {
   test("two same numbers are equal", true, 2, 2);
   test("two different numbers are unequal", false, 3, 2);
+  test("a number and a string should be unequal", false, 5, "a");
 }
 
 function testStrings() {
@@ -90,6 +91,7 @@ function testBoolean() {
   test("a boolean and a number should be unequal", false, true, 1);
   test("a boolean and a string should be unequal", false, true, "a");
   test("a boolean and a array should be unequal", false, true, [1, 2]);
+  test("a boolean and a object should be unequal", false, true, { a: 1 });
 }
 
 function testUndefindNullNaN() {
