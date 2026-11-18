@@ -1,116 +1,123 @@
-function isTypeEqual(value1, value2) {
-  return typeof value1 === typeof value2;
+function isLengthEqual(a, b) {
+  return a.length === b.length;
 }
 
-function isObject(value1, value2) {
-  return typeof value1 === "object" && typeof value2 === "object";
+function areBothArrays(a, b) {
+  return Array.isArray(a) && Array.isArray(b);
 }
 
-// const value1 = 5;
+function isArrayEqual(a, b) {
+  if (!isLengthEqual(a, b)) return false;
 
-// console.log(Array.isArray(value1));
-
-function isArray(value1, value2) {
-  return Array.isArray(value1) && Array.isArray(value2);
-}
-
-function isLengthEqual(array1, array2) {
-  return array1.length === array2.length;
-}
-
-function isValueEqual(array1, array2) {
-  if (array1.length === 0 && array2.length === 0) {
-    return true;
-  } else {
-    for (let key = 0; key < array1.length; key++) {
-      if (array1[key] === array2[key]) {
-        return true;
-      }
-      return false;
-    }
+  for (let index = 0; index < a.length; index++) {
+    if (!isEqual(a[index], b[index])) return false;
   }
+  return true;
 }
 
-function isArrayEqual(array1, array2) {
-  if (isLengthEqual(array1, array2)) {
-    return isValueEqual(array1, array2);
+function areBothObjects(a, b) {
+  return typeof a === "object" && typeof b === "object";
+}
+
+function areObjectsEqual(a, b) {
+  if (!isLengthEqual(Object.keys(a), Object.keys(b))) return false;
+
+  for (const key in a) {
+    if (!(key in b)) return false;
+    if (!isEqual(a[key], b[key])) return false;
+  }
+  return true;
+}
+
+function areValuesEqual(a, b) {
+  return a === b;
+}
+
+function type(a) {
+  if (a === null) return "null";
+  if (Array.isArray(a)) return "Array";
+  return typeof a;
+}
+
+function areTypesEqual(a, b) {
+  return type(a) === type(b);
+}
+
+function isEqual(a, b) {
+  if (areValuesEqual(a, b)) return true;
+
+  if (!areTypesEqual(a, b)) return false;
+
+  switch (type(a)) {
+    case "Array":
+      return areObjectsEqual(a, b);
+
+    case "object":
+      return areObjectsEqual(a, b);
   }
   return false;
 }
 
-function isObjectEqual(value1, value2) {
-  const keyName1 = Object.keys(value1);
-  const keyName2 = Object.keys(value2);
+function test(massege, expected, a, b) {
+  const actual = isEqual(a, b);
+  const result = expected === actual ? "✅" : "❌";
+  console.log(`${result} | ${massege}`);
+}
 
-  const object1Value = Object.values(value1);
-  const object2Value = Object.values(value2);
+function testNumbers() {
+  test("two same numbers are equal", true, 2, 2);
+  test("two different numbers are unequal", false, 3, 2);
+}
 
-  return (
-    isArrayEqual(keyName1, keyName2) && isArrayEqual(object1Value, object2Value)
+function testStrings() {
+  test("two same strings are equal", true, "a", "a");
+  test("two different strings are unequal", false, "b", "a");
+}
+
+function testObjects() {
+  test("two objects are equal", true, { a: 1, b: 4 }, { b: 4, a: 1 });
+  test("two different objects are unequal", false, { a: 1 }, { a: 1, b: 3 });
+  test(
+    "two same nested objects are equal",
+    true,
+    { a: 1, b: { a: 1 }, c: 2 },
+    { a: 1, b: { a: 1 }, c: 2 },
+  );
+  test(
+    "two different nested objects are unequal",
+    false,
+    { a: 1, b: { a: 1 }, c: 2 },
+    { a: { a: 1 }, c: 2 },
   );
 }
 
-function isEqual(value1, value2) {
-  if (!isTypeEqual(value1, value2)) return false;
-
-  if (!isObject(value1, value2)) return value1 === value2;
-
-  if (isArray(value1, value2)) {
-    return isArrayEqual(value1, value2);
-  }
-  return isObjectEqual(value1, value2);
-}
-//   return value1 === value2;
-
-//   return false;
-
-// const value1 = [1,2,3];
-// const value2 = {};
-
-// console.log(isEqual(value1, value2));
-// console.log(isObjectEqual(value1, value2));
-// console.log(isObject(value1, value2));
-// console.log(isArrayEqual(value1, value2));
-// console.log(isObject(value1, value2));
-
-function test(value1, value2, massege) {
-  const result = isEqual(value1, value2);
-  const icon = result ? "✅" : "❌";
-  console.log(`${icon} :`, massege);
+function testArrays() {
+  test("two arrays are equal", true, [1, 2], [1, 2]);
+  test("two different arrays are unequal", false, [1], []);
+  test("two nested arrays are equal", true, [[2], 4], [[2], 4]);
+  test("two different nested arrays are unequal", false, [[2, 3], 4], [[2], 4]);
 }
 
-test(1, 1, "number(true)");
-test("a", "a", "string(true)");
-test([], [], "same empaty array(true)");
-test([1, 2, 3], [1, 2, 4], "same empaty array(false)");
+function testBoolean() {
+  test("two boolean are equal", true, true, true);
+  test("a boolean and a number should be unequal", false, true, 1);
+  test("a boolean and a string should be unequal", false, true, "a");
+  test("a boolean and a array should be unequal", false, true, [1, 2]);
+}
 
-test({}, {}, "same empaty object(true)");
-test([], {}, "empaty array and object(false)");
+function testUndefindNullNaN() {
+  test("two null values are equal", true, null, null);
+  test("two undefined values are equal", true, undefined, undefined);
+  test("undefined and null is unequal", false, undefined, null);
+}
 
-test([1], [1], "same array(true)");
-test([1], [1, 2], "unequal length array(false)");
-test(1, "1", "number and object(false)");
+function main() {
+  testBoolean();
+  testNumbers();
+  testStrings();
+  testArrays();
+  testObjects();
+  testUndefindNullNaN();
+}
 
-test({ a: 1 }, { a: 1 }, "equal object(true)");
-test({ a: 1 }, { b: 1 }, "unequal object different key name(false)");
-
-test({ a: [1] }, { a: [1] }, "same object containing same array(true)");
-test(
-  { a: { b: 1 } },
-  { a: { b: 1 } },
-  "same object containing same object(true)",
-);
-
-// isEqual(1, 1); // true
-// isEqual("a", "a"); // true
-// isEqual([], []); // true
-// isEqual([1], [1]); // true
-// isEqual([1], [1, 2]); // false
-// isEqual(1, "1"); // false
-
-// isEqual({ a: 1 }, { a: 1 }); // true
-// isEqual({ a: 1 }, { b: 1 }); // false
-
-// isEqual({ a: [1] }, { a: [1] }); // true
-
-// isEqual({ a: { b: 1 } }, { a: { b: 1 } }); // true
+main();
