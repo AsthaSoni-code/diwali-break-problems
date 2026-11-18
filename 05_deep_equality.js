@@ -18,6 +18,7 @@ function areValuesEqual(a, b) {
 
 function type(a) {
   if (a === null) return "null";
+  if (Number.isNaN(a)) return "NaN";
   if (Array.isArray(a)) return "Array";
   return typeof a;
 }
@@ -37,6 +38,9 @@ function isEqual(a, b) {
 
     case "object":
       return areObjectsEqual(a, b);
+
+    case "NaN":
+      return true;
   }
   return false;
 }
@@ -91,7 +95,10 @@ function testBoolean() {
 function testUndefindNullNaN() {
   test("two null values are equal", true, null, null);
   test("two undefined values are equal", true, undefined, undefined);
+  test("two NaN values are equal", true, NaN, NaN);
   test("undefined and null is unequal", false, undefined, null);
+  test("NaN and null is unequal", false, NaN, null);
+  test("undefined and NaN is unequal", false, undefined, NaN);
 }
 
 function main() {
